@@ -8,10 +8,9 @@ int main()
 	ios::sync_with_stdio(false);
 	cin.tie(NULL); cout.tie(NULL);
 
-	int n;
+	long long n, pipe = 0, ans = 0;
 	cin >> n;
 
-	int pipe = 0;
 	vector<int> v(n);
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
@@ -19,7 +18,6 @@ int main()
 	}
 	sort(v.begin(), v.end());
 
-	int ans = 0;
 	for (int i = 0; i < n - 1; i++) {
 		ans += (v[i] * (pipe - v[i]));
 		pipe -= v[i];
