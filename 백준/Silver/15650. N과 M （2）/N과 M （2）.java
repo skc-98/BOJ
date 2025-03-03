@@ -1,14 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-// 아이디어
-// n개의 수 중에서 m개를 선택해 순열을 출력하는 문제입니다. 중복을 제거해야 합니다.
 public class Main {
-	// n과 m 전역변수 선언
-	static int n;
-	static int m;
-	static boolean[] visit;
-
 	public static void main(String[] args) throws Exception {
 		// 빠른 입력을 위한 BufferedReader 사용
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,26 +11,30 @@ public class Main {
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
 
-		// 백트래킹 시작
-		visit = new boolean[n];
-		backTracking(0, 0);
+		visit = new boolean[n + 1];
+		backTracking(1);
 	}
 
-	static void backTracking(int cnt, int start) {
-		// m개를 선택했으면 출력
-		if (cnt == m) {
-			for (int i = 0; i < n; i++) {
-				if (visit[i])
-					System.out.print((i + 1) + " ");
+	static int n, m;
+	static List<Integer> numbers = new ArrayList<>();
+	static boolean[] visit;
+
+	static void backTracking(int cnt) {
+		if (numbers.size() == m) {
+			for (int i = 0; i < numbers.size(); i++) {
+				System.out.print(numbers.get(i) + " ");
 			}
 			System.out.println();
 			return;
 		}
 
-		// 조합 만들기
-		for (int i = start; i < n; i++) {
+		for (int i = cnt; i <= n; i++) {
+			if (visit[i])
+				continue;
 			visit[i] = true;
-			backTracking(cnt + 1, i + 1);
+			numbers.add(i);
+			backTracking(i + 1);
+			numbers.remove(numbers.size() - 1);
 			visit[i] = false;
 		}
 	}
