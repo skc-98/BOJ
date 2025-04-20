@@ -1,60 +1,66 @@
 import java.util.*;
 import java.io.*;
 
+// 시작 바이러스는 항상 1번 컴퓨터에서 감염
 public class Main {
-	// 전역변수 선언
+	// 인접 리스트는 전역으로 선언
 	static List<Integer>[] list;
-	static Set<Integer> pc;
 
 	public static void main(String[] args) throws Exception {
-		// 빠른 입력을 위한 BufferedReader 사용
+		// BufferedReader 사용
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		// 컴퓨터의 수 입력
 		int n = Integer.parseInt(br.readLine());
 
-		// 연결된 컴퓨터 쌍의 수
-		int pair = Integer.parseInt(br.readLine());
+		// 연결 된 컴퓨터 쌍의 수 입력
+		int m = Integer.parseInt(br.readLine());
 
-		// 연결 정보 저장할 인접 리스트 생성
+		// 인접 리스트 생성, 인덱스 1번부터 사용
 		list = new ArrayList[n + 1];
 		for (int i = 1; i <= n; i++) {
 			list[i] = new ArrayList<>();
 		}
 
-		// 인접 리스트에 연결 정보 입력하기
-		for (int i = 0; i < pair; i++) {
+		// 인접 리스트에 각 연결 정보 저장
+		for (int i = 0; i < m; i++) {
+			// 연결 정보 입력
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
+
+			// 양방향 연결 관계 추가
 			list[a].add(b);
 			list[b].add(a);
 		}
 
-		// 바이러스에 걸리는 컴퓨터를 저장할 set
-		pc = new HashSet<>();
+		// DFS 탐색을 통해 1번 컴퓨터부터 감염 시작
+		visit = new boolean[n + 1];
+		dfs(1);
 
-		// 1번 컴퓨터 기준으로 DFS 탐색 시작
-		for (int i = 0; i < list[1].size(); i++) {
-			int now = list[1].get(i);
-			dfs(now);
+		// 이제 방문 한 컴퓨터는 모두 감염이니까 방문 배열 카운트, 이때 1번 컴퓨터는 제외
+		int ans = 0;
+		for (int i = 2; i <= n; i++) {
+			if (visit[i])
+				ans++;
 		}
 
-		// 답은 set의 크기임
-		System.out.println(pc.size());
+		// 답 출력하기
+		System.out.print(ans);
 	}
 
-	// DFS 탐색 메서드
-	static void dfs(int now) {
-		// 이미 방문한 경우 더 들어가지 않기
-		if (pc.contains(now) || now == 1)
-			return;
-		pc.add(now);
+	// 방문 배열
+	static boolean[] visit;
 
-		// 아직 방문하지 않은 경우에만 DFS 재호출
-		for (int next : list[now]) {
-			if (!pc.contains(next))
-				dfs(next);
+	// DFS 탐색 메서드
+	static void dfs(int n) {
+		for (int i = 0; i < list[n].size(); i++) {
+			// 아직 방문하지 않은 경우 방문 처리 후 DFS 재호출
+			if (!visit[list[n].get(i)]) {
+				visit[list[n].get(i)] = true;
+				dfs(list[n].get(i));
+			}
 		}
+		return;
 	}
 }
