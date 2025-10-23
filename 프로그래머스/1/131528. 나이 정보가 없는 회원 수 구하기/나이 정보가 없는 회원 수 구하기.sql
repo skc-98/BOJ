@@ -1,1 +1,3 @@
-select count(user_id) as USERS from user_info where age is NULL
+select count(*) as users
+from user_info
+where age is null;
