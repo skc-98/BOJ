@@ -9,45 +9,23 @@ public class Main {
 		// 레몬의 수
 		int n = Integer.parseInt(br.readLine());
 
-		// 스택에 넣으면서 입력
-		Stack<Integer> stack = new Stack<>();
+		// 1과 2수
+		long one = 0;
+		long two = 0;
+
+		// 레몬 입력
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < n; i++) {
 			int lemon = Integer.parseInt(st.nextToken());
-			stack.push(lemon);
-
-			// 제거 반복
-			while (true) {
-				// 마지막 2개 합이 3
-				if (stack.size() >= 2) {
-					int a = stack.get(stack.size() - 1);
-					int b = stack.get(stack.size() - 2);
-					if (a + b == 3) {
-						stack.pop();
-						stack.pop();
-						continue;
-					}
-				}
-
-				// 마지막 3개가 1,1,1
-				if (stack.size() >= 3) {
-					int a = stack.get(stack.size() - 1);
-					int b = stack.get(stack.size() - 2);
-					int c = stack.get(stack.size() - 3);
-					if (a == 1 && b == 1 && c == 1) {
-						stack.pop();
-						stack.pop();
-						stack.pop();
-						continue;
-					}
-				}
-
-				break;
+			if (lemon == 1) {
+				one++;
+			} else if (lemon == 2) {
+				two++;
 			}
 		}
 
 		// 답 출력하기
-		if (stack.isEmpty()) {
+		if (one >= two && (one - two) % 3 == 0) {
 			System.out.print("Yes");
 		} else {
 			System.out.print("No");
